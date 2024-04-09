@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pyls"
+version = "0.1.0"
+description = "A Python ls utility"
+authors = ["Soumya Ranjan Das <srdas120986@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest = "^8.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+pyls = "pyls:main"
