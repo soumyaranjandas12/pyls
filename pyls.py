@@ -10,6 +10,17 @@ def get_main_contents():
         return contents_main
 
 
+def get_readable_size(size):
+    units = ['B', 'K', 'M', 'G']
+    unit_index = 0
+    while size >= 1024 and unit_index < len(units) - 1:
+        size /= 1024
+        unit_index += 1
+    if unit_index == 0:
+        return f"{size}"
+    return f"{size:.1f}{units[unit_index]}"
+
+
 def get_level1_dirs(contents):
     dirs_lv_1 = []
     for content in contents:
@@ -34,7 +45,8 @@ def get_ls_l_content(contents, args, dir_main):
             month = dt_time[0:11].split('-')[1]
             day = dt_time[0:11].split('-')[2]
             hr_min = dt_time.split(' ')[1]
-            data.append([content['permissions'], str(content['size']), month, day, hr_min, content['name'],
+            size = get_readable_size(content['size'])
+            data.append([content['permissions'], size, month, day, hr_min, content['name'],
                          content['time_modified']])
 
     # Subtask 7: Handle Paths (5 points)
@@ -53,8 +65,8 @@ def get_ls_l_content(contents, args, dir_main):
                             day = dt_time[0:11].split('-')[2]
                             hr_min = dt_time.split(' ')[1]
                             data.append(
-                                [content['permissions'], str(content['size']), month, day, hr_min, "./" + dir_name +
-                                 '/' + file_name, content['time_modified']])
+                                [content['permissions'], get_readable_size(content['size']), month, day, hr_min,
+                                 "./" + dir_name + '/' + file_name, content['time_modified']])
                             return [dt[0:-1] for dt in data]
             return f"error: cannot access '{'./' + dir_name + '/' + file_name}': No such file or directory"
         elif dir_name in dir_main and file_name is None:
@@ -68,7 +80,7 @@ def get_ls_l_content(contents, args, dir_main):
                         day = dt_time[0:11].split('-')[2]
                         hr_min = dt_time.split(' ')[1]
                         data.append(
-                            [content['permissions'], str(content['size']), month, day, hr_min, content['name'],
+                            [content['permissions'], get_readable_size(content['size']), month, day, hr_min, content['name'],
                              content['time_modified']])
                     return [dt[0:-1] for dt in data][::-1]
         return f"error: cannot access '{dir_name}': No such file or directory"
